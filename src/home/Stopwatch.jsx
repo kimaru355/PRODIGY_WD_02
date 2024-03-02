@@ -28,8 +28,9 @@ function Stopwatch() {
     if (event.target.id === "Lap" && main === "Pause") {
       console.log("main");
       setLaps((prevLaps) => {
-        prevLaps.push([...timer]);
-        return prevLaps;
+        let newLaps = JSON.parse(JSON.stringify(prevLaps));
+        newLaps.push([...timer]);
+        return newLaps;
       });
       console.log(laps);
     } else {
