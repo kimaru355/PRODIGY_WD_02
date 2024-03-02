@@ -128,7 +128,7 @@ function Stopwatch() {
                   key={index}
                   className="flex justify-between items-center w-full bg-gray-400"
                 >
-                  <p>Lap {index + 1}</p>
+                  <p>Lap {laps.length - index}</p>
                   <div className="bg-gray-500 flex gap-2 px-2 py-2">
                     {lap.map((lapItem, index) => {
                       return (
