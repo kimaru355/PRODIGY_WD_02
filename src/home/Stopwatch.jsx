@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 function Stopwatch() {
+  // Variable declarations and initialization
   const common =
     "w-28 h-28 rounded-full text-3xl hover:scale-90 active:scale-110";
   const [timer, setTimer] = useState(["00", "00", "00"]);
@@ -10,6 +11,7 @@ function Stopwatch() {
   const [modUI, setModUI] = useState(`${common} bg-cyan-300`);
   const [laps, setLaps] = useState([]);
 
+  // handle start and pause
   const handleMain = (event) => {
     if (event.target.id === "Start") {
       setMain("Pause");
@@ -24,15 +26,14 @@ function Stopwatch() {
     }
   };
 
+  // handle lap and reset
   const handleMod = (event) => {
     if (event.target.id === "Lap" && main === "Pause") {
-      console.log("main");
       setLaps((prevLaps) => {
         let newLaps = JSON.parse(JSON.stringify(prevLaps));
-        newLaps.push([...timer]);
+        newLaps.splice(0, 0, [...timer]);
         return newLaps;
       });
-      console.log(laps);
     } else {
       setMod("Lap");
       setModUI(`${common} bg-cyan-300`);
@@ -41,51 +42,53 @@ function Stopwatch() {
     }
   };
 
+  // run stopwatch
   useEffect(() => {
     if (main === "Pause") {
       const setIntval = setInterval(() => {
         setTimer((prevTimer) => {
           let currentTime = 0;
-          if (+prevTimer[prevTimer.length - 1] < 99) {
-            currentTime = +prevTimer[prevTimer.length - 1] + 1;
+          let newTimer = [...prevTimer];
+          if (+newTimer[newTimer.length - 1] < 99) {
+            currentTime = +newTimer[newTimer.length - 1] + 1;
             currentTime =
               currentTime < 10 ? "0" + currentTime : "" + currentTime;
-            prevTimer[prevTimer.length - 1] = currentTime;
-            return prevTimer;
-          } else if (+prevTimer[prevTimer.length - 2] < 59) {
-            currentTime = +prevTimer[prevTimer.length - 2] + 1;
+            newTimer[newTimer.length - 1] = currentTime;
+            return newTimer;
+          } else if (+newTimer[newTimer.length - 2] < 59) {
+            currentTime = +newTimer[newTimer.length - 2] + 1;
             currentTime =
               currentTime < 10 ? "0" + currentTime : "" + currentTime;
-            prevTimer[prevTimer.length - 2] = currentTime;
-            prevTimer[prevTimer.length - 1] = "00";
-            return prevTimer;
-          } else if (+prevTimer[prevTimer.length - 3] < 59) {
-            currentTime = +prevTimer[prevTimer.length - 3] + 1;
+            newTimer[newTimer.length - 2] = currentTime;
+            newTimer[newTimer.length - 1] = "00";
+            return newTimer;
+          } else if (+newTimer[newTimer.length - 3] < 59) {
+            currentTime = +newTimer[newTimer.length - 3] + 1;
             currentTime =
               currentTime < 10 ? "0" + currentTime : "" + currentTime;
-            prevTimer[prevTimer.length - 3] = currentTime;
-            prevTimer[prevTimer.length - 2] = "00";
-            prevTimer[prevTimer.length - 1] = "00";
-            return prevTimer;
-          } else if (+prevTimer[prevTimer.length - 3] === 60) {
-            if (prevTimer.length < 4) {
-              prevTimer[prevTimer.length - 3] = "01";
-              prevTimer[prevTimer.length - 2] = "00";
-              prevTimer[prevTimer.length - 1] = "00";
-              prevTimer.push("00");
-              return prevTimer;
+            newTimer[newTimer.length - 3] = currentTime;
+            newTimer[newTimer.length - 2] = "00";
+            newTimer[newTimer.length - 1] = "00";
+            return newTimer;
+          } else if (+newTimer[newTimer.length - 3] === 60) {
+            if (newTimer.length < 4) {
+              newTimer[newTimer.length - 3] = "01";
+              newTimer[newTimer.length - 2] = "00";
+              newTimer[newTimer.length - 1] = "00";
+              newTimer.push("00");
+              return newTimer;
             }
-            currentTime = +prevTimer[prevTimer.length - 4] + 1;
+            currentTime = +newTimer[newTimer.length - 4] + 1;
             currentTime =
               currentTime < 10 ? "0" + currentTime : "" + currentTime;
-            prevTimer[prevTimer.length - 4] = currentTime;
-            prevTimer[prevTimer.length - 3] = "00";
-            prevTimer[prevTimer.length - 2] = "00";
-            prevTimer[prevTimer.length - 1] = "00";
-            return prevTimer;
+            newTimer[newTimer.length - 4] = currentTime;
+            newTimer[newTimer.length - 3] = "00";
+            newTimer[newTimer.length - 2] = "00";
+            newTimer[newTimer.length - 1] = "00";
+            return newTimer;
           }
         });
-      }, 100);
+      }, 10);
 
       return () => clearInterval(setIntval);
     }
