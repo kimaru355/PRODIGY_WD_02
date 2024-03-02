@@ -25,7 +25,8 @@ function Stopwatch() {
   };
 
   const handleMod = (event) => {
-    if (event.target.id === "Lap") {
+    if (event.target.id === "Lap" && main === "Pause") {
+      console.log("main");
       setLaps((prevLaps) => {
         prevLaps.push([...timer]);
         return prevLaps;
@@ -115,18 +116,22 @@ function Stopwatch() {
             {main}
           </button>
         </div>
-        <div className="flex flex-col gap-4 text-2xl">
+        <div className="flex flex-col w-full text-2xl bg-gray-800 max-w-96 gap-1">
           {laps.length > 0 &&
             laps.map((lap, index) => {
               return (
                 <div
                   key={index}
-                  className="flex justify-between w-full max-w-96 bg-red-300"
+                  className="flex justify-between items-center w-full bg-gray-400"
                 >
-                  <div className="bg-">
-                    <p>Lap {index}</p>
+                  <p>Lap {index + 1}</p>
+                  <div className="bg-gray-500 flex gap-2 px-2 py-2">
                     {lap.map((lapItem, index) => {
-                      return <p key={index}>{lapItem}</p>;
+                      return (
+                        <p key={index} className="bg-red-300">
+                          {lapItem}
+                        </p>
+                      );
                     })}
                   </div>
                 </div>
